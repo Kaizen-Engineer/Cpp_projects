@@ -1,0 +1,128 @@
+#include<iostream>
+#include<cstring>
+#include<string.h>
+#include<fstream>
+#include<random>
+#include<cmath>
+using namespace std;
+
+double readBal(){
+    ifstream inFile("balance.txt");
+    double balance = 0.0;
+    if(inFile.is_open()){
+        inFile>>balance;
+        inFile.close();
+    }
+    return balance;
+}
+string readName(){
+    ifstream inFile("accname.txt");
+    string name = "";
+    if(inFile.is_open()){
+        inFile>>name;
+        inFile.close();
+    }
+    return name;
+}
+void writeName(string name){
+    ofstream outFile("accname.txt");
+    if(outFile.is_open()){
+        outFile<<name;
+        outFile.close();
+    }
+    else{
+        cout<<"Error";
+    }
+}
+long long readAccnum(){
+    ifstream inFile("accnumber.txt");
+    long long accNum1=0;
+    if(inFile.is_open()){
+        inFile>>accNum1;
+        inFile.close();
+    }
+    return accNum1;                        
+}
+void writeAccnum(long long accNum1){
+    ofstream outFile("accnumber.txt");
+    if(outFile.is_open()){
+        outFile<<accNum1;
+        outFile.close();
+    }
+    else{
+        cout<<"Error";
+    }
+}
+
+void writeBal(double balance){
+    ofstream outFile("balance.txt");
+    if(outFile.is_open()){
+        outFile<<balance;
+        outFile.close();
+    }
+    else{
+        cout<<"Error";
+    }
+}
+
+int main(){
+    int digit=18;
+    double balance = readBal();
+    char options;
+    string name;
+    long long accNum=12992983828991;
+
+    cout<<"Chose what to do (C = create account, D = deposite, W = withdraw, A = account details): ";
+    cin>>options;
+
+    if(options=='C'){
+        cout<<"Enter your name: ";
+        cin>>name;
+
+        writeName(name);
+        writeAccnum(accNum);
+        cout<<"Name: "<<name<<endl;
+        cout<<"Account number: "<<accNum<<endl;
+    }
+    else if(options=='D'){
+        double depositeAmount;
+        cout<<"Enter amount to deposite: ";
+        cin>>depositeAmount;
+
+        balance+=depositeAmount;
+        writeBal(balance);
+        cout<<"Successfully deposited the amount of "<<depositeAmount<<" to the account "<<endl;
+    }
+    else if(options=='W'){
+        double withdrawalAmount;
+        cout<<"Enter amount to withdraw: ";
+        cin>>withdrawalAmount;
+
+        if(withdrawalAmount<=balance){
+            balance-=withdrawalAmount;
+            writeBal(balance);
+            cout<<"Available balance: "<<balance<<endl;
+        }
+        else{
+            cout<<"Insufficient balance!"<<endl;
+        }
+    }
+    else if(options=='A'){
+        ifstream readName("accname.txt");
+        ifstream readAccnum("accnumber.txt");
+        ifstream readBal("balance.txt");
+
+        getline(readName, name);
+        readAccnum>>accNum;
+        readBal>>balance;
+
+        cout<<"Name: "<<name<<endl;
+        cout<<"Account number: "<<accNum<<endl;
+        cout<<"Balance: "<<balance<<endl;
+
+        readName.close();
+        readAccnum.close();
+        readBal.close();
+    }
+    return 0;
+}
