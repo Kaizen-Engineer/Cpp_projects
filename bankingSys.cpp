@@ -65,6 +65,48 @@ void writeBal(double balance){
     }
 }
 
+double readTransaction(){
+    ifstream inFile("transaction.txt");
+    double transaction=0.0;
+    if(inFile.is_open()){
+        inFile>>transaction;
+        inFile.close();
+    }
+    return transaction;
+}
+
+void writeTransaction(double transaction){
+    ofstream outFile("transaction.txt");
+    if(outFile.is_open()){
+        outFile<<transaction;
+        outFile.close();
+    }
+    else{
+        cout<<"Error";
+    }
+}
+
+double readDepTransaction(){
+    ifstream inFile("depotransaction.txt");
+    double depotransaction=0.0;
+    if(inFile.is_open()){
+        inFile>>depotransaction;
+        inFile.close();
+    }
+    return depotransaction;
+}
+
+void writeDepTransaction(double depotransaction){
+    ofstream outFile("depotransaction.txt");
+    if(outFile.is_open()){
+        outFile<<depotransaction;
+        outFile.close();
+    }
+    else{
+        cout<<"Error";
+    }
+}
+
 int main(){
     int digit=18;
     double balance = readBal();
@@ -86,18 +128,24 @@ int main(){
     }
     else if(options=='D'){
         double depositeAmount;
+        double depotransaction;
         cout<<"Enter amount to deposite: ";
         cin>>depositeAmount;
 
         balance+=depositeAmount;
         writeBal(balance);
+        depotransaction=depositeAmount;
+        writeDepTransaction(depotransaction);
         cout<<"Successfully deposited the amount of "<<depositeAmount<<" to the account "<<endl;
     }
     else if(options=='W'){
         double withdrawalAmount;
+        double transaction;
         cout<<"Enter amount to withdraw: ";
         cin>>withdrawalAmount;
 
+        transaction=withdrawalAmount;
+        writeTransaction(transaction);
         if(withdrawalAmount<=balance){
             balance-=withdrawalAmount;
             writeBal(balance);
@@ -111,14 +159,17 @@ int main(){
         ifstream readName("accname.txt");
         ifstream readAccnum("accnumber.txt");
         ifstream readBal("balance.txt");
+        ifstream readDepTransaction("depotransaction.txt");
+        ifstream readTransaction("transaction.txt");
 
         getline(readName, name);
         readAccnum>>accNum;
         readBal>>balance;
-
+        
         cout<<"Name: "<<name<<endl;
         cout<<"Account number: "<<accNum<<endl;
         cout<<"Balance: "<<balance<<endl;
+        //cout<<"Last transaction: -"<<
 
         readName.close();
         readAccnum.close();
