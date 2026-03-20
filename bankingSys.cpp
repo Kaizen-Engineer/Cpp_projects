@@ -165,7 +165,7 @@ int main(){
         getline(readName, name);
         readAccnum>>accNum;
         readBal>>balance;
-        
+
         cout<<"Name: "<<name<<endl;
         cout<<"Account number: "<<accNum<<endl;
         cout<<"Balance: "<<balance<<endl;
