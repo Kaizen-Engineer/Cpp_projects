@@ -4,6 +4,7 @@
 #include<fstream>
 #include<random>
 #include<cmath>
+#include<ctime>
 using namespace std;
 
 double readBal(){
@@ -110,6 +111,8 @@ void writeDepTransaction(double depotransaction){
 int main(){
     int digit=18;
     double balance = readBal();
+    double depotransaction = readDepTransaction();
+    double transaction = readTransaction();
     char options;
     string name;
     long long accNum=12992983828991;
@@ -165,15 +168,21 @@ int main(){
         getline(readName, name);
         readAccnum>>accNum;
         readBal>>balance;
+        readDepTransaction>>depotransaction;
+        readTransaction>>transaction;
 
         cout<<"Name: "<<name<<endl;
         cout<<"Account number: "<<accNum<<endl;
         cout<<"Balance: "<<balance<<endl;
-        //cout<<"Last transaction: -"<<
+        cout<<"Last transaction: "<<endl;
+        cout<<"Deposite: +"<<depotransaction<<endl;
+        cout<<"Withdraw: -"<<transaction<<endl;
 
         readName.close();
         readAccnum.close();
         readBal.close();
+        readDepTransaction.close();
+        readTransaction.close();
     }
     return 0;
 }
