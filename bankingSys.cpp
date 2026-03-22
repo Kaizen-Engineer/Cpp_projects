@@ -108,12 +108,56 @@ void writeDepTransaction(double depotransaction){
     }
 }
 
+string readDeptime(){
+    ifstream inFile("deptime.txt");
+    string deptime="";
+    if(inFile.is_open()){
+        inFile>>deptime;
+        inFile.close();
+    }
+    return deptime;
+}
+
+void writeDeptime(string deptime){
+    ofstream outFile("deptime.txt");
+    if(outFile.is_open()){
+        outFile<<deptime;
+        outFile.close();
+    }
+    else{
+        cout<<"Error";
+    }
+}
+
+string readWithtime(){
+    ifstream inFile("withtime.txt");
+    string withtime="";
+    if(inFile.is_open()){
+        inFile>>withtime;
+        inFile.close();
+    }
+    return withtime;
+}
+
+void writeWithtime(string withtime){
+    ofstream outFile("withtime.txt");
+    if(outFile.is_open()){
+        outFile<<withtime;
+        outFile.close();
+    }
+    else{
+        cout<<"Error";
+    }
+}
+
 int main(){
     int digit=18;
     double balance = readBal();
     double depotransaction = readDepTransaction();
     double transaction = readTransaction();
     char options;
+    string deptime = readDeptime();
+    string withtime = readWithtime();
     string name;
     long long accNum=12992983828991;
 
@@ -164,25 +208,31 @@ int main(){
         ifstream readBal("balance.txt");
         ifstream readDepTransaction("depotransaction.txt");
         ifstream readTransaction("transaction.txt");
+        ifstream readDeptime("deptime.txt");
+        ifstream readWithtime("withtime.txt");
 
         getline(readName, name);
         readAccnum>>accNum;
         readBal>>balance;
         readDepTransaction>>depotransaction;
         readTransaction>>transaction;
+        readDeptime>>deptime;
+        readWithtime>>withtime;
 
         cout<<"Name: "<<name<<endl;
         cout<<"Account number: "<<accNum<<endl;
         cout<<"Balance: "<<balance<<endl;
         cout<<"Last transaction: "<<endl;
-        cout<<"Deposite: +"<<depotransaction<<endl;
-        cout<<"Withdraw: -"<<transaction<<endl;
+        cout<<"Deposite: +"<<depotransaction<<" "<<deptime<<endl;
+        cout<<"Withdraw: -"<<transaction<<" "<<withtime<<endl;
 
         readName.close();
         readAccnum.close();
         readBal.close();
         readDepTransaction.close();
         readTransaction.close();
+        readDeptime.close();
+        readWithtime.close();
     }
     return 0;
 }
