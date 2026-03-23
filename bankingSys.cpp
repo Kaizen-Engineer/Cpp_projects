@@ -35,6 +35,49 @@ void writeName(string name){
         cout<<"Error";
     }
 }
+
+long long readPhonenum(){
+    ifstream inFile("phonenum.txt");
+    long long phonenum=0;
+    if(inFile.is_open()){
+        inFile>>phonenum;
+        inFile.close();
+    }
+    return phonenum;
+}
+
+void writePhonenum(long long phonenum){
+    ofstream outFile("phonenum.txt");
+    if(outFile.is_open()){
+        outFile<<phonenum;
+        outFile.close();
+    }
+    else{
+        cout<<"Error";
+    }
+}
+
+string readAddress(){
+    ifstream inFile("address.txt");
+    string address="";
+    if(inFile.is_open()){
+        getline(inFile, address);
+        inFile.close();
+    }
+    return address;
+}
+
+void writeAddress(string address){
+    ofstream outFile("address.txt");
+    if(outFile.is_open()){
+        outFile<<address;
+        outFile.close();
+    }
+    else{
+        cout<<"Error";
+    }
+}
+
 long long readAccnum(){
     ifstream inFile("accnumber.txt");
     long long accNum1=0;
@@ -112,7 +155,7 @@ string readDeptime(){
     ifstream inFile("deptime.txt");
     string deptime="";
     if(inFile.is_open()){
-        inFile>>deptime;
+        getline(inFile, deptime);
         inFile.close();
     }
     return deptime;
@@ -133,7 +176,7 @@ string readWithtime(){
     ifstream inFile("withtime.txt");
     string withtime="";
     if(inFile.is_open()){
-        inFile>>withtime;
+        getline(inFile, withtime);
         inFile.close();
     }
     return withtime;
@@ -150,6 +193,16 @@ void writeWithtime(string withtime){
     }
 }
 
+string getTimestamp(){
+    time_t now = time(0);
+    tm *ltm=localtime(&now);
+
+    char buffer[80];
+
+    strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", ltm);
+    return string(buffer);
+}
+
 int main(){
     int digit=18;
     double balance = readBal();
@@ -158,7 +211,11 @@ int main(){
     char options;
     string deptime = readDeptime();
     string withtime = readWithtime();
+    string currentTime=getTimestamp();
+    string currentTimewith=getTimestamp();
     string name;
+    long long phonenum;
+    string address;
     long long accNum=12992983828991;
 
     cout<<"Chose what to do (C = create account, D = deposite, W = withdraw, A = account details): ";
@@ -167,12 +224,19 @@ int main(){
     if(options=='C'){
         cout<<"Enter your name: ";
         cin>>name;
+        cout<<"Enter phonenumber: ";
+        cin>>phonenum;
+        cin.ignore();
+        cout<<"Enter address: ";
+        getline(cin, address);
 
         writeName(name);
-        writeAccnum(accNum);
-        cout<<"Name: "<<name<<endl;
-        cout<<"Account number: "<<accNum<<endl;
+        writePhonenum(phonenum);
+        writeAddress(address);
+        writeAccnum(accNum); 
+        cout<<"Account created successfully";
     }
+
     else if(options=='D'){
         double depositeAmount;
         double depotransaction;
@@ -183,6 +247,7 @@ int main(){
         writeBal(balance);
         depotransaction=depositeAmount;
         writeDepTransaction(depotransaction);
+        writeDeptime(currentTime);
         cout<<"Successfully deposited the amount of "<<depositeAmount<<" to the account "<<endl;
     }
     else if(options=='W'){
@@ -196,6 +261,7 @@ int main(){
         if(withdrawalAmount<=balance){
             balance-=withdrawalAmount;
             writeBal(balance);
+            writeWithtime(currentTimewith);
             cout<<"Available balance: "<<balance<<endl;
         }
         else{
@@ -203,36 +269,26 @@ int main(){
         }
     }
     else if(options=='A'){
-        ifstream readName("accname.txt");
-        ifstream readAccnum("accnumber.txt");
-        ifstream readBal("balance.txt");
-        ifstream readDepTransaction("depotransaction.txt");
-        ifstream readTransaction("transaction.txt");
-        ifstream readDeptime("deptime.txt");
-        ifstream readWithtime("withtime.txt");
+        name = readName();
+        accNum = readAccnum();
+        phonenum = readPhonenum();
+        address = readAddress();
+        balance = readBal();
+        depotransaction = readDepTransaction();
+        transaction = readTransaction();
+        deptime = readDeptime();
+        withtime = readWithtime();
 
-        getline(readName, name);
-        readAccnum>>accNum;
-        readBal>>balance;
-        readDepTransaction>>depotransaction;
-        readTransaction>>transaction;
-        readDeptime>>deptime;
-        readWithtime>>withtime;
-
+        
         cout<<"Name: "<<name<<endl;
         cout<<"Account number: "<<accNum<<endl;
+        cout<<"Phone number: "<<phonenum<<endl;
+        cout<<"Address: "<<address<<endl;
         cout<<"Balance: "<<balance<<endl;
         cout<<"Last transaction: "<<endl;
         cout<<"Deposite: +"<<depotransaction<<" "<<deptime<<endl;
         cout<<"Withdraw: -"<<transaction<<" "<<withtime<<endl;
 
-        readName.close();
-        readAccnum.close();
-        readBal.close();
-        readDepTransaction.close();
-        readTransaction.close();
-        readDeptime.close();
-        readWithtime.close();
     }
     return 0;
 }
